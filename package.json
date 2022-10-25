@@ -1,6 +1,6 @@
 {
   "name": "lil-stopwatch",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A timestamp based stopwatch library",
   "author": "Nate Harris",
   "license": "MIT",

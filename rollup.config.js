@@ -18,7 +18,7 @@ export default defineConfig({
     {
       file: 'dist/lil-stopwatch.min.js',
       format: 'umd',
-      name: 'lil-stopwatch',
+      name: 'LilStopwatch',
       exports: 'default',
       esModule: false,
       plugins: [terser()],
