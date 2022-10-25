@@ -10,7 +10,7 @@
 		"allowJs": false,
 		"outDir": "./dist",
 		"skipLibCheck": true,
-		"types": [],
+		"types": ["jest"],
 		"baseUrl": "./src",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
