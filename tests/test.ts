@@ -40,7 +40,9 @@ describe('Stopwatch', () => {
 
     time.addMin(59);
     expect(stopwatch.totalHours).toEqual(1);
-    expect(stopwatch.totalMilliseconds).toEqual(1000 * 60 * 60);
+    expect(stopwatch.totalMinutes).toEqual(60);
+    expect(stopwatch.totalSeconds).toEqual(60 * 60);
+    expect(stopwatch.totalMilliseconds).toEqual(60 * 60 * 1000);
   });
 
   it('has a `state` getter', () => {
@@ -53,7 +55,7 @@ describe('Stopwatch', () => {
       hours: 5,
       minutes: 4,
       seconds: 3,
-      milliseconds: 21,
+      milliseconds: 210,
     });
   });
 
@@ -111,6 +113,25 @@ describe('Stopwatch', () => {
     expect(stopwatch.display).toEqual('05:04:03:21');
   });
 
+  it('displays with configured ms precision from 1 - 3', () => {
+    // @ts-expect-error
+    let stopwatch = new Stopwatch({ displayMsPrecision: 0 });
+    expect(stopwatch.display).toEqual('00:00:0');
+
+    stopwatch = new Stopwatch({ displayMsPrecision: 1 });
+    expect(stopwatch.display).toEqual('00:00:0');
+
+    stopwatch = new Stopwatch({ displayMsPrecision: 2 });
+    expect(stopwatch.display).toEqual('00:00:00');
+
+    stopwatch = new Stopwatch({ displayMsPrecision: 3 });
+    expect(stopwatch.display).toEqual('00:00:000');
+
+    // @ts-expect-error
+    stopwatch = new Stopwatch({ displayMsPrecision: 4 });
+    expect(stopwatch.display).toEqual('00:00:000');
+  });
+
   it('does not display hours by default', () => {
     const stopwatch = new Stopwatch();
     expect(stopwatch.display).toEqual('00:00:00');
@@ -124,9 +145,11 @@ describe('Stopwatch', () => {
   it('has a toggle functionality', () => {
     const stopwatch = new Stopwatch();
     expect(stopwatch.isRunning).toBe(false);
+    expect(stopwatch.isPaused).toBe(false);
     stopwatch.toggle();
     expect(stopwatch.isRunning).toBe(true);
     stopwatch.toggle();
     expect(stopwatch.isRunning).toBe(false);
+    expect(stopwatch.isPaused).toBe(true);
   });
 });

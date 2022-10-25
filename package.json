@@ -1,6 +1,6 @@
 {
   "name": "lil-stopwatch",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A timestamp based stopwatch library",
   "author": "Nate Harris",
   "license": "MIT",
@@ -27,6 +27,7 @@
     "mockdate": "^3.0.5",
     "rollup": "^3.2.3",
     "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.34.1",
     "ts-jest": "^29.0.3",
     "typescript": "^4.8.4"

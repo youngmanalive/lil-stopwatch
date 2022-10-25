@@ -1,5 +1,6 @@
 import typescript from 'rollup-plugin-typescript2';
 import del from 'rollup-plugin-delete';
+import { terser } from 'rollup-plugin-terser';
 import { defineConfig } from 'rollup';
 
 export default defineConfig({
@@ -13,6 +14,14 @@ export default defineConfig({
     {
       file: 'dist/index.esm.js',
       format: 'es',
+    },
+    {
+      file: 'dist/lil-stopwatch.min.js',
+      format: 'umd',
+      name: 'lil-stopwatch',
+      exports: 'default',
+      esModule: false,
+      plugins: [terser()],
     },
   ],
   plugins: [del({ targets: 'dist/*' }), typescript()],

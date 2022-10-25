@@ -17,7 +17,7 @@ const stopwatch = new Stopwatch();
 const container = document.getElementById('stopwatch');
 container.onclick = () => stopwatch.toggle();
 
-setTimeout(() => {
+setInterval(() => {
   container.innerText = stopwatch.display;
 }, 50);
 ```
@@ -28,7 +28,7 @@ const stopwatch = new Stopwatch({ ...options });
 ```
 name | description
 --- | ---
-constructor options | {<br>`startImmediately`: `boolean` (default `false`),<br>`displayHours`: `boolean` (default `false`),<br>`displaySeparator`: `string` (default `':'`)<br>}
+constructor options | {<br>`startImmediately`: `boolean` (default `false`),<br>`displayHours`: `boolean` (default `false`),<br>`displaySeparator`: `string` (default `':'`)<br>`displayMsPrecision`: `1-3` (default `2`)<br>}
 `play()` | start the timer
 `stop()` | stop/pause the timer
 `toggle()` | toggle between stop and play

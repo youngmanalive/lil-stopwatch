@@ -1,15 +1,15 @@
-function _toFixedFloat(number: number) {
-  return Math.round(number * 100) / 100;
-}
-
-function _parseTime(milliseconds: number) {
-  return new Date(milliseconds).toISOString().slice(11, 22).split(/\D/);
-}
-
 export interface StopwatchConfig {
-  startImmediately: boolean,
+  startImmediately: boolean;
   displayHours: boolean;
   displaySeparator: string;
+  displayMsPrecision: 1 | 2 | 3;
+}
+
+export interface StopwatchState {
+  hours: number;
+  minutes: number;
+  seconds: number;
+  milliseconds: number;
 }
 
 export default class Stopwatch {
@@ -17,13 +17,11 @@ export default class Stopwatch {
     startImmediately: false,
     displayHours: false,
     displaySeparator: ':',
+    displayMsPrecision: 2,
   };
 
-  private _running = false;
-  private _paused = false;
   private _startStamp: number | null = null;
   private _pauseStamp: number | null = null;
-  private _pauseDiffs: number[] = [];
 
   constructor(config: Partial<StopwatchConfig> = {}) {
     this.config = { ...this.config, ...config };
@@ -34,24 +32,17 @@ export default class Stopwatch {
   }
 
   get isRunning() {
-    return this._running;
+    return !!this._startStamp && !this._pauseStamp;
   }
 
   get isPaused() {
-    return this._paused;
+    return !!this._pauseStamp;
   }
 
   get totalMilliseconds() {
-    if (!this._startStamp) {
-      return 0;
-    }
-
-    const endStamp = this._pauseDiffs.reduce(
-      (stamp, diff) => stamp - diff,
-      this._pauseStamp || Date.now()
-    );
-
-    return endStamp - this._startStamp;
+    return this._startStamp
+      ? (this._pauseStamp || Date.now()) - this._startStamp
+      : 0;
   }
 
   get totalSeconds() {
@@ -66,7 +57,7 @@ export default class Stopwatch {
     return _toFixedFloat(this.totalMilliseconds / (1000 * 60 * 60));
   }
 
-  get state() {
+  get state(): StopwatchState {
     const [hours, minutes, seconds, milliseconds] = _parseTime(
       this.totalMilliseconds
     ).map((value) => parseInt(value, 10));
@@ -75,25 +66,26 @@ export default class Stopwatch {
   }
 
   get display() {
-    const values = _parseTime(this.totalMilliseconds).slice(
-      this.config.displayHours ? 0 : 1
-    );
+    const display = _parseTime(this.totalMilliseconds)
+      .slice(this.config.displayHours ? 0 : 1)
+      .join(this.config.displaySeparator);
 
-    return values.join(this.config.displaySeparator);
+    return display.slice(
+      0,
+      display.length -
+        (3 - Math.max(1, Math.min(3, this.config.displayMsPrecision)))
+    );
   }
 
   play = () => {
-    if (!this.isRunning && !this.isPaused) {
-      this._startStamp = Date.now();
-      this._running = true;
+    if (this.isPaused) {
+      this._startStamp! += Date.now() - this._pauseStamp!;
+      this._pauseStamp = null;
       return;
     }
 
-    if (!this.isRunning && this.isPaused && !!this._pauseStamp) {
-      this._pauseDiffs.push(Date.now() - this._pauseStamp);
-      this._pauseStamp = null;
-      this._running = true;
-      this._paused = false;
+    if (!this.isRunning) {
+      this._startStamp = Date.now();
     }
   };
 
@@ -103,8 +95,6 @@ export default class Stopwatch {
     }
 
     this._pauseStamp = Date.now();
-    this._running = false;
-    this._paused = true;
   };
 
   toggle = () => {
@@ -116,10 +106,15 @@ export default class Stopwatch {
   };
 
   reset = () => {
-    this._running = false;
-    this._paused = false;
     this._startStamp = null;
     this._pauseStamp = null;
-    this._pauseDiffs = [];
   };
+}
+
+function _toFixedFloat(number: number) {
+  return Math.round(number * 100) / 100;
+}
+
+function _parseTime(milliseconds: number) {
+  return new Date(milliseconds).toISOString().slice(11, 23).split(/\D/);
 }
