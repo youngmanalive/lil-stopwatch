@@ -4,6 +4,7 @@
   "description": "A timestamp based stopwatch library",
   "author": "Nate Harris",
   "license": "MIT",
+  "repository": "https://github.com/youngmanalive/lil-stopwatch",
   "homepage": "https://github.com/youngmanalive/lil-stopwatch",
   "main": "dist/index.cjs",
   "module": "dist/index.esm.js",
@@ -15,6 +16,7 @@
   "scripts": {
     "build": "rollup -c",
     "build:watch": "rollup -cw",
+    "docs-deploy": "node ./docs.deploy.js",
     "test": "jest"
   },
   "devDependencies": {
@@ -23,6 +25,7 @@
     "@typescript-eslint/parser": "^5.40.1",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
+    "gh-pages": "^4.0.0",
     "jest": "^29.2.2",
     "mockdate": "^3.0.5",
     "rollup": "^3.2.3",
@@ -33,7 +36,12 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {},
-  "keywords": [],
+  "keywords": [
+    "stopwatch",
+    "timer",
+    "counter",
+    "clock"
+  ],
   "private": false,
   "type": "module"
 }

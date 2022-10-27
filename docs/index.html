@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>lil-stopwatch</title>
+
+    <!-- LilStopwatch -->
+    <script src="https://unpkg.com/lil-stopwatch@1.0.4/dist/lil-stopwatch.min.js"></script>
+
+    <!-- Fonts and CSS Reset -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css"
+    />
+
+    <!-- Mustard UI -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/mustard-ui@latest/dist/css/mustard-ui.min.css"
+    />
+
+    <!-- PrismJS: Syntax Highlighting -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.13.0/themes/prism.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.13.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.13.0/plugins/normalize-whitespace/prism-normalize-whitespace.js"></script>
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.9/css/solid.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.9/css/fontawesome.css"
+    />
+
+    <!-- Custom Styles -->
+    <style>
+      nav {
+        background-color: aquamarine;
+      }
+      .nav-container {
+        max-width: 768px;
+      }
+      main {
+        max-width: 768px;
+        margin: 0 auto;
+      }
+      .code-small {
+        font-size: 12px;
+      }
+      #example1 {
+        text-align: center;
+        border: 1px solid lightgrey;
+        border-radius: 4px;
+        margin: 30px 0;
+        padding: 10px;
+      }
+      #example1-display {
+        font-family: monospace;
+        font-weight: normal;
+      }
+      pre,
+      code {
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-container">
+        <div class="nav-logo">lil-stopwatch ⏱</div>
+        <ul class="nav-links">
+          <li>
+            <a
+              href="https://www.npmjs.com/package/lil-stopwatch"
+              target="_blank"
+              >npm</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://github.com/youngmanalive/lil-stopwatch"
+              target="_blank"
+              >github</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div>
+      <main>
+        <section>
+          <h3 id="intro">00:00</h3>
+          <script>
+            (() => {
+              const stopwatch = new LilStopwatch({ startImmediately: true });
+              const container = document.getElementById('intro');
+              setInterval(() => {
+                const { minutes, seconds } = stopwatch.state;
+                container.innerText = [minutes, seconds]
+                  .map((val) => String(val).padStart(2, '0'))
+                  .join(':');
+              }, 500);
+            })();
+          </script>
+          <p>
+            Zero-dependency stopwatch using timestamps. Does not implement
+            intervals or "ticking", the utility simply provides the elapsed time
+            when you need it. The rest is up to you.
+          </p>
+        </section>
+        <section>
+          <h4>Install</h4>
+          <div>
+            <pre class="language-js code-small">npm i lil-stopwatch</pre>
+            or
+            <pre class="language-js code-small">yarn add lil-stopwatch</pre>
+            or
+            <pre class="language-html code-small">
+              <code class="language-html code-small">
+                &lt;!-- globally available as `LilStopwatch` --&gt;
+                &lt;script src="https://unpkg.com/lil-stopwatch@1.0.4/dist/lil-stopwatch.min.js"&gt;&lt;/script&gt;
+              </code>
+            </pre>
+          </div>
+        </section>
+        <section>
+          <div>
+            <h5>Example</h5>
+            <div id="example1">
+              <h4 id="example1-display">00:00:00</h4>
+              <div id="example1-buttons">
+                <button class="button-info-outlined button-small">start</button>
+                <button class="button-info-outlined button-small" disabled>
+                  stop
+                </button>
+                <button class="button-info-outlined button-small" disabled>
+                  reset
+                </button>
+              </div>
+            </div>
+            <script>
+              (() => {
+                const stopwatch = new LilStopwatch();
+                const display = document.getElementById('example1-display');
+                const [start, stop, reset] = document.querySelectorAll(
+                  '#example1-buttons button'
+                );
+
+                const setText = (text) => {
+                  display.innerText = text;
+                };
+
+                let interval = undefined;
+
+                start.onclick = () => {
+                  start.setAttribute('disabled', true);
+                  stop.removeAttribute('disabled');
+                  reset.removeAttribute('disabled');
+
+                  if (!interval) {
+                    interval = setInterval(() => setText(stopwatch.display));
+                  }
+
+                  stopwatch.play();
+                  console.log(interval);
+                };
+
+                stop.onclick = () => {
+                  stop.setAttribute('disabled', true);
+                  start.removeAttribute('disabled');
+
+                  clearInterval(interval);
+                  interval = undefined;
+
+                  stopwatch.stop();
+                  setText(stopwatch.display);
+                };
+
+                reset.onclick = () => {
+                  reset.setAttribute('disabled', true);
+                  stop.setAttribute('disabled', true);
+                  start.removeAttribute('disabled');
+
+                  clearInterval(interval);
+                  interval = undefined;
+
+                  stopwatch.reset();
+                  setText(stopwatch.display);
+                };
+              })();
+            </script>
+            <pre class="language-html">
+              <code class="language-html">
+
+                &lt;div id="stopwatch"&gt;
+                  &lt;h3 id="display"&gt;00:00:00&lt;/h3&gt;
+                  &lt;div id="buttons"&gt;
+                    &lt;button&gt;start&lt;/button&gt;
+                    &lt;button&gt;stop&lt;/button&gt;
+                    &lt;button&gt;reset&lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+
+              </code>
+            </pre>
+            <pre class="language-js">
+              <code class="language-js">
+                import Stopwatch from 'lil-stopwatch';
+
+                const stopwatch = new Stopwatch();
+                const display = document.getElementById('display');
+
+                const [start, stop, reset] = document.querySelectorAll('#buttons button');
+
+                start.onclick = () => stopwatch.play();
+                stop.onclick = () => stopwatch.stop();
+                reset.onclick = () => stopwatch.reset();
+
+                setInterval(() => {
+                  display.innerText = stopwatch.display;
+                });
+              </code>
+            </pre>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
