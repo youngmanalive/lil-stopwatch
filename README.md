@@ -4,6 +4,7 @@
 
 Zero-dependency stopwatch using timestamps. This does not implement intervals or "ticking", the utility simply provides the elapsed time when you need it. The rest is up to you.
 
+### [Docs ↗](https://youngmanalive.github.io/lil-stopwatch/)
 
 ```html
 <div id="stopwatch">00:00:00</div>

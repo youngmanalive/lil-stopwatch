@@ -1,11 +1,11 @@
 {
   "name": "lil-stopwatch",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A timestamp based stopwatch library",
   "author": "Nate Harris",
   "license": "MIT",
   "repository": "https://github.com/youngmanalive/lil-stopwatch",
-  "homepage": "https://github.com/youngmanalive/lil-stopwatch",
+  "homepage": "https://youngmanalive.github.io/lil-stopwatch",
   "main": "dist/index.cjs",
   "module": "dist/index.esm.js",
   "files": [
