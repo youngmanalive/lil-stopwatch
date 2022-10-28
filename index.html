@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- #region HEAD MAIN -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>lil-stopwatch</title>
+    <!-- #endregion -->
 
     <!-- LilStopwatch -->
-    <script src="https://unpkg.com/lil-stopwatch@1.0.4/dist/lil-stopwatch.min.js"></script>
+    <script src="https://unpkg.com/lil-stopwatch@latest/dist/lil-stopwatch.min.js"></script>
 
+    <!-- #region HEAD EXTERNAL -->
     <!-- Fonts and CSS Reset -->
     <link
       rel="stylesheet"
@@ -43,8 +45,9 @@
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.0.9/css/fontawesome.css"
     />
+    <!-- #endregion -->
 
-    <!-- Custom Styles -->
+    <!-- #region STYLES -->
     <style>
       nav {
         background-color: aquamarine;
@@ -54,29 +57,45 @@
       }
       main {
         max-width: 768px;
-        margin: 0 auto;
+        margin: 0 auto 6rem;
       }
       .code-small {
         font-size: 12px;
       }
-      #example1 {
-        text-align: center;
-        border: 1px solid lightgrey;
-        border-radius: 4px;
-        margin: 30px 0;
-        padding: 10px;
-      }
-      #example1-display {
+      .mono {
         font-family: monospace;
         font-weight: normal;
+      }
+      #usage > div {
+        margin-bottom: 4rem;
+      }
+      .card {
+        margin: 30px 0;
+        text-align: center;
+        border: 1px solid lightgrey;
+      }
+      #hover:hover {
+        background-color: #fffaf4;
       }
       pre,
       code {
         font-size: 14px;
       }
+      footer {
+        background-color: lightgrey;
+      }
+      table pre {
+        border: 0;
+      }
+      th,
+      td {
+        border: 1px solid #eee;
+      }
     </style>
+    <!-- #endregion -->
   </head>
   <body>
+    <!-- #region NAV -->
     <nav>
       <div class="nav-container">
         <div class="nav-logo">lil-stopwatch ⏱</div>
@@ -98,14 +117,17 @@
         </ul>
       </div>
     </nav>
+    <!-- #endregion -->
+
     <div>
       <main>
+        <!-- #region INTRO -->
         <section>
-          <h3 id="intro">00:00</h3>
+          <h3 id="intro-stopwatch">00:00</h3>
           <script>
             (() => {
               const stopwatch = new LilStopwatch({ startImmediately: true });
-              const container = document.getElementById('intro');
+              const container = document.getElementById('intro-stopwatch');
               setInterval(() => {
                 const { minutes, seconds } = stopwatch.state;
                 container.innerText = [minutes, seconds]
@@ -120,26 +142,124 @@
             when you need it. The rest is up to you.
           </p>
         </section>
-        <section>
+        <!-- #endregion -->
+
+        <!-- #region INSTALL -->
+        <section id="install">
           <h4>Install</h4>
           <div>
-            <pre class="language-js code-small">npm i lil-stopwatch</pre>
-            or
-            <pre class="language-js code-small">yarn add lil-stopwatch</pre>
+            <pre class="code-small">npm i lil-stopwatch</pre>
+            <pre class="code-small">yarn add lil-stopwatch</pre>
+            <pre class="language-js code-small">
+              <code class="language-js code-small">
+                import Stopwatch from 'lil-stopwatch';
+
+                const stopwatch = new Stopwatch({ ...options });
+              </code>
+            </pre>
             or
             <pre class="language-html code-small">
               <code class="language-html code-small">
                 &lt;!-- globally available as `LilStopwatch` --&gt;
-                &lt;script src="https://unpkg.com/lil-stopwatch@1.0.4/dist/lil-stopwatch.min.js"&gt;&lt;/script&gt;
+                &lt;script src="https://unpkg.com/lil-stopwatch@latest/dist/lil-stopwatch.min.js"&gt;&lt;/script&gt;
               </code>
             </pre>
           </div>
         </section>
-        <section>
+        <!-- #endregion -->
+
+        <!-- #region API -->
+        <section id="api">
+          <h4>API</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>name</th>
+                <th>description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>constructor options</td>
+                <td>
+                  <pre class="language-js">
+                    <code>
+                      {
+                        startImmediately: bool = false,
+                        displayHours: bool = false
+                        displaySeparator: string = ';',
+                        displayMsPrecision: 1 | 2 | 3 = 2,
+                      }
+                    </code>
+                  </pre>
+                </td>
+              </tr>
+              <tr>
+                <td><code>play()</code></td>
+                <td>start the timer</td>
+              </tr>
+              <tr>
+                <td><code>stop()</code></td>
+                <td>stop/pause the timer</td>
+              </tr>
+              <tr>
+                <td><code>toggle()</code></td>
+                <td>toggle between stop and play</td>
+              </tr>
+              <tr>
+                <td><code>reset()</code></td>
+                <td>clear the current state and stop the timer</td>
+              </tr>
+              <tr>
+                <td><code>state</code></td>
+                <td>
+                  <code>{ hours, minutes, seconds, milliseconds }</code>
+                </td>
+              </tr>
+              <tr>
+                <td><code>display</code></td>
+                <td>
+                  <code>XX:XX:XX</code>
+                </td>
+              </tr>
+              <tr>
+                <td><code>isRunning</code></td>
+                <td>specifies if the stopwatch is currently running</td>
+              </tr>
+              <tr>
+                <td><code>isPaused</code></td>
+                <td>specifies if the stopwatch is stopped/paused</td>
+              </tr>
+              <tr>
+                <td><code>totalMilliseconds</code></td>
+                <td>total elapsed milliseconds</td>
+              </tr>
+              <tr>
+                <td><code>totalSeconds</code></td>
+                <td>total elapsed seconds</td>
+              </tr>
+              <tr>
+                <td><code>totalMinutes</code></td>
+                <td>total elapsed minutes</td>
+              </tr>
+              <tr>
+                <td><code>totalHours</code></td>
+                <td>total elapsed hours</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <!-- #endregion -->
+
+        <!-- #region USAGE -->
+        <section id="usage">
+          <h4>Examples</h4>
+
+          <!-- #region STOPWATCH -->
           <div>
-            <h5>Example</h5>
-            <div id="example1">
-              <h4 id="example1-display">00:00:00</h4>
+            <h6>Basic Stopwatch</h6>
+            <div id="example1" class="card">
+              <h4 id="example1-display" class="mono">00:00:00</h4>
               <div id="example1-buttons">
                 <button class="button-info-outlined button-small">start</button>
                 <button class="button-info-outlined button-small" disabled>
@@ -174,7 +294,6 @@
                   }
 
                   stopwatch.play();
-                  console.log(interval);
                 };
 
                 stop.onclick = () => {
@@ -205,7 +324,7 @@
               <code class="language-html">
 
                 &lt;div id="stopwatch"&gt;
-                  &lt;h3 id="display"&gt;00:00:00&lt;/h3&gt;
+                  &lt;h4 id="display"&gt;00:00:00&lt;/h4&gt;
                   &lt;div id="buttons"&gt;
                     &lt;button&gt;start&lt;/button&gt;
                     &lt;button&gt;stop&lt;/button&gt;
@@ -216,7 +335,7 @@
               </code>
             </pre>
             <pre class="language-js">
-              <code id="myJs" class="language-js">
+              <code class="language-js">
                 import Stopwatch from 'lil-stopwatch';
 
                 const stopwatch = new Stopwatch();
@@ -234,8 +353,129 @@
               </code>
             </pre>
           </div>
+          <!-- #endregion -->
+
+          <!-- #region VISIBILITY -->
+          <div>
+            <h6>Visibility</h6>
+            <div id="visible-el" class="card">
+              This element has been visible for
+              <div><span id="visible-time" class="mono">0</span> seconds</div>
+            </div>
+            <script>
+              (() => {
+                const stopwatch = new LilStopwatch();
+                const container = document.getElementById('visible-el');
+                const time = document.getElementById('visible-time');
+                observer = new IntersectionObserver((entries) => {
+                  if (entries[0].isIntersecting) stopwatch.play();
+                  else stopwatch.stop();
+                });
+                setInterval(() => {
+                  const current = stopwatch.totalSeconds.toFixed(0);
+                  if (time.innerText !== current) {
+                    time.innerText = current;
+                  }
+                }, 10);
+                observer.observe(container);
+              })();
+            </script>
+          </div>
+          <!-- #endregion -->
+
+          <!-- #region SCROLL TIME -->
+          <div>
+            <h6>Scroll Time</h6>
+            <div class="card">
+              You've spent
+              <div><span id="scroll-time" class="mono">0</span> seconds</div>
+              scrolling on this page
+            </div>
+            <script>
+              (() => {
+                const stopwatch = new LilStopwatch();
+                const container = document.getElementById('scroll-time');
+                let tid = undefined;
+                document.addEventListener('scroll', () => {
+                  if (!stopwatch.isRunning) stopwatch.play();
+                  clearTimeout(tid);
+                  tid = setTimeout(() => {
+                    stopwatch.stop();
+                    container.innerText = stopwatch.totalSeconds.toFixed(2);
+                  }, 50);
+                  container.innerText = stopwatch.totalSeconds.toFixed(2);
+                });
+              })();
+            </script>
+          </div>
+          <!-- #endregion -->
+
+          <!-- #region HOVER TIME -->
+          <div>
+            <h6>Hover Time</h6>
+            <div id="hover" class="card">
+              This element has been hovered for
+              <div><span id="hover-time" class="mono">0.00</span> seconds</div>
+            </div>
+            <script>
+              (() => {
+                const stopwatch = new LilStopwatch();
+                const container = document.getElementById('hover');
+                const time = document.getElementById('hover-time');
+                let iid = undefined;
+                container.onmouseenter = () => {
+                  stopwatch.play();
+                  iid = setInterval(() => {
+                    time.innerText = stopwatch.totalSeconds.toFixed(2);
+                  });
+                };
+                container.onmouseleave = () => {
+                  clearInterval(iid);
+                  stopwatch.stop();
+                };
+              })();
+            </script>
+          </div>
+          <!-- #endregion -->
+
+          <!-- #region TIME TO TARGET -->
+          <div>
+            <h6>Time To Target</h6>
+            <div class="card">
+              It took you
+              <div>
+                <span id="target-visible" class="mono">0.00</span> seconds
+              </div>
+              to get here
+            </div>
+            <script>
+              (() => {
+                const stopwatch = new LilStopwatch({
+                  startImmediately: true,
+                });
+                const target = document.getElementById('target-visible');
+
+                observer = new IntersectionObserver((entries) => {
+                  if (entries[0].isIntersecting) {
+                    stopwatch.stop();
+                    target.innerText = stopwatch.totalSeconds.toFixed(2);
+                    observer.unobserve(target);
+                  }
+                });
+
+                observer.observe(target);
+              })();
+            </script>
+          </div>
+          <!-- #endregion -->
         </section>
+        <!-- #endregion -->
       </main>
     </div>
+
+    <footer>
+      lil-stopwatch | made by
+      <a href="https://github.com/youngmanalive" target="_blank">nate</a>
+    </footer>
   </body>
 </html>
